@@ -3,7 +3,6 @@ const express = require("express");
 const app = express();
 const path = require("path");
 const cors = require("cors");
-// console.log(process.env);
 const port = process.env.PORT;
 
 app.use(cors({ origin: `http://localhost:${port}` }));
@@ -13,19 +12,22 @@ app.get("/", (req, res) => {
     return res.send(`This is main page`);
 });
 
-app.get("/welcome", (req, res) => {
-    return res.send(`Welcome.`);
+app.get("/homework", (req, res) => {
+    return res.send(`This is the homework page.`);
 });
 
-app.get("/greet", (req, res) => {
-    const { name, lastName } = req.query;
+app.get("/homework/:id", (req, res) => {
+    const id = parseInt(req.params.id);
+    const responseData = { message: `homework id: ${id}` };
 
-    if (name && lastName) {
-        res.send(`Hello ${name} ${lastName}`);
-    } else
+    if (!isNaN(id)) {
+        const responseData = { message: `homework id: ${id}` };
+        return res.send(responseData.message);
+    } else {
         res.status(422).send(
-            "Unprocessable Content. Please provide valid name and lastName parameters"
+            "Unprocessable Content. Please provide a valid id parameter"
         );
+    }
 });
 
 app.listen(port, () => {
